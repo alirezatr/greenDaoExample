@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SimpleCursorAdapter;
 
+import java.math.BigDecimal;
+
 public class StoreActivity extends ListActivity {
 
     private SQLiteDatabase db;
@@ -28,10 +30,10 @@ public class StoreActivity extends ListActivity {
         daoSession = daoMaster.newSession();
         instrumentDao = daoSession.getInstrumentDao();
 
-        String textColumn = InstrumentDao.Properties.Instrument.columnName;
+        String textColumn = InstrumentDao.Properties.DisplayName.columnName;
         cursor = db.query(instrumentDao.getTablename(), instrumentDao.getAllColumns(), null, null, null, null, null);
-        String[] from = { textColumn };
-        int[] to = { android.R.id.text1 };
+        String[] from = { textColumn, InstrumentDao.Properties.Pip.columnName };
+        int[] to = { android.R.id.text1, android.R.id.text2 };
 
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, from,
                 to);
@@ -40,10 +42,10 @@ public class StoreActivity extends ListActivity {
     }
 
     private void addInstrument() {
-        Instrument instrument = new Instrument("EUR/USD", "EUR_USD", null, null, 0);
-        //Instrument instrument2 = new Instrument("AUD/CAD", "AUD_CAD", null, null, 0);
-        instrumentDao.insert(instrument);
-        //instrumentDao.insert(instrument2);
+        Instrument EURUSD = new Instrument("EUR_USD", "EUR/USD", BigDecimal.valueOf(0.0001), BigDecimal.valueOf(0.00001), 250);
+        Instrument AUDCAD = new Instrument("AUD_CAD", "AUD/CAD", BigDecimal.valueOf(0.0001), BigDecimal.valueOf(0.00001), 250);
+        instrumentDao.insert(EURUSD);
+        instrumentDao.insert(AUDCAD);
         cursor.requery();
     }
 
