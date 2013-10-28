@@ -38,15 +38,24 @@ public class StoreActivity extends ListActivity {
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, from,
                 to);
         setListAdapter(adapter);
-        addInstrument();
+        addInstruments();
     }
 
-    private void addInstrument() {
-        Instrument EURUSD = new Instrument("EUR_USD", "EUR/USD", BigDecimal.valueOf(0.0001), BigDecimal.valueOf(0.00001), 250);
-        Instrument AUDCAD = new Instrument("AUD_CAD", "AUD/CAD", BigDecimal.valueOf(0.0001), BigDecimal.valueOf(0.00001), 250);
-        instrumentDao.insert(EURUSD);
-        instrumentDao.insert(AUDCAD);
+    private void addInstruments() {
+        Instrument EURUSD = new Instrument("EUR_USD", "EUR/USD", BigDecimal.valueOf(0.0001), BigDecimal.valueOf(0.00001), 650);
+        updateDB(EURUSD);
+        Instrument AUDCAD = new Instrument("AUD_CAD", "AUD/CAD", BigDecimal.valueOf(0.0002), BigDecimal.valueOf(0.00005), 250);
+        updateDB(AUDCAD);
         cursor.requery();
+    }
+
+    private void updateDB(Instrument instrument) {
+        if (instrumentDao.load(instrument.instrument()) != null) {
+            instrumentDao.update(instrument);
+        }
+        else {
+            instrumentDao.insert(instrument);
+        }
     }
 
     @Override

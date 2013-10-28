@@ -71,12 +71,12 @@ public class InstrumentDao extends AbstractDao<Instrument, String> {
 
         BigDecimal pip = entity.pip();
         if (displayName != null) {
-            stmt.bindString(3, pip.toString());
+            stmt.bindString(3, pip.toPlainString());
         }
 
         BigDecimal precision = entity.precision();
         if (displayName != null) {
-            stmt.bindString(4, precision.toString());
+            stmt.bindString(4, precision.toPlainString());
         }
  
         Integer maxTradeUnits = entity.maxTradeUnits();
@@ -106,11 +106,7 @@ public class InstrumentDao extends AbstractDao<Instrument, String> {
      
     /** @inheritdoc */
     @Override
-    public void readEntity(Cursor cursor, Instrument entity, int offset) {
-//        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-//        entity.setDisplayName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-//        entity.setMaxTradeUnits(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-     }
+    public void readEntity(Cursor cursor, Instrument entity, int offset) {}
     
     /** @inheritdoc */
     @Override
